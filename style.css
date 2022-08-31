@@ -4,16 +4,17 @@
 
 body{
     margin: 0;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 :root{
-    --cell-size: 15vw;
+    --cell-size: min(15vw,100px);
     --mark-size: calc(var(--cell-size) * .9)
 }
 
 .board{
-    width:90vw;
-    height:90vh;
     display: grid;
     justify-content: center;
     align-content: center;
@@ -30,6 +31,12 @@ body{
     justify-content: center;
     align-items: center;
     position: relative;
+    cursor: pointer;
+}
+
+.cell.x,
+.cell.circle{
+    cursor: not-allowed;
 }
 
 .cell:first-child, 
@@ -52,8 +59,11 @@ body{
     border-bottom: none;
 }
 
+
 .cell.x::before,
-.cell.x::after
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after
 {
     content: '';
     width: calc(var(--mark-size) * .15);
@@ -62,30 +72,82 @@ body{
     position: absolute;
 }
 
-.cell.x::before{
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before{
     transform: rotate(45deg);
 }
 
 
-.cell.x::after{
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after{
     transform: rotate(-45deg);
 }
 
 .cell.circle::before,
-.cell.circle::after{
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after   {
     content: '';
     position: absolute;
     border-radius: 50%;
 }
 
-.cell.circle::before{
+.cell.circle::before,
+.board.circle .cell:not(.x):not(.circle):hover::before {
     width: var(--mark-size) ;
     height: var(--mark-size);
     background-color: black;
 }
 
-.cell.circle::after{
+
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{
+    background-color:gray;
+}
+
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after{
     width: calc(var(--mark-size) * .7) ;
     height: calc(var(--mark-size) * .7);
     background-color: white;
 }
+
+header{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 7rem;
+}
+
+main{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.playerName input{
+    border: none;
+    outline: none;
+    font-family:inherit;
+    font-size: inherit;
+    height: 2rem;
+}
+
+.playerName input:focus,
+.playerName textarea:focus,
+.playerName select:focus{
+    outline: none;
+    font-family:inherit;
+    font-size: 1.7rem;
+    width: 10ch;
+}
+
+.playerName input::placeholder {
+    font-size: 1.7rem;
+    font-weight: bold;
+}
+
