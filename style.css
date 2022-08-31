@@ -129,25 +129,23 @@ main{
     gap: 2rem;
 }
 
-.playerName input{
+.playerName textarea{
     border: none;
     outline: none;
-    font-family:inherit;
-    font-size: inherit;
-    height: 2rem;
-}
-
-.playerName input:focus,
-.playerName textarea:focus,
-.playerName select:focus{
-    outline: none;
-    font-family:inherit;
-    font-size: 1.7rem;
+    font-size:1.7rem;
+    color: rgb(59, 59, 59);
     width: 10ch;
+    resize: none;
+    overflow: hidden;
 }
 
-.playerName input::placeholder {
+.playerName textarea:hover, .playerName textarea:active,
+.playerName textarea:focus{
+    border: none;
+}
+
+
+.playerName textarea::placeholder {
     font-size: 1.7rem;
     font-weight: bold;
 }
-
