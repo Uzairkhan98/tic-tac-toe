@@ -167,3 +167,24 @@ main{
 .editImage:hover {
     filter: invert(8%) sepia(100%) saturate(6481%) hue-rotate(210deg) brightness(102%) contrast(143%); 
 }
+
+.bottomBar{
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.gameState{
+    padding: 1rem;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding-inline: 1.8rem;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+
+.gameState:hover, .gameState:focus{
+    outline: none;
+  box-shadow: 0 0 0 1px black ;
+}
