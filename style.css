@@ -129,6 +129,11 @@ main{
     gap: 2rem;
 }
 
+.playerName{
+    display: flex;
+    gap: 0.5rem;
+}
+
 .playerName textarea{
     border: none;
     outline: none;
@@ -137,6 +142,7 @@ main{
     width: 10ch;
     resize: none;
     overflow: hidden;
+    position: relative;
 }
 
 .playerName textarea:hover, .playerName textarea:active,
@@ -148,4 +154,16 @@ main{
 .playerName textarea::placeholder {
     font-size: 1.7rem;
     font-weight: bold;
+}
+
+.editImage{
+    background-image: url('./edit-button.svg');
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: 0.2rem;
+    cursor: pointer;
+}
+
+.editImage:hover {
+    filter: invert(8%) sepia(100%) saturate(6481%) hue-rotate(210deg) brightness(102%) contrast(143%); 
 }
