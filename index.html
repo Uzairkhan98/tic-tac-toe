@@ -9,8 +9,8 @@
     <title>Tic Tac Toe</title>
 </head>
 <body>
-    <header>
-        <h1>Click on the start button to continue</h1>
+    <header >
+        <h1 id="header">Click on the start button to continue</h1>
     </header>
     <main>
         <div class="playerName">
@@ -36,7 +36,7 @@
         </div>
     </main>
     <div class="bottomBar">
-        <button type="submit" class="gameState">
+        <button id="gameButton" type="submit" class="gameState" onclick="changeGameState()">
             Start Game
         </button>
     </div>
