@@ -18,9 +18,9 @@
             <textarea placeholder="Player 1"  name="player1" id="player1"
             maxlength="30" cols="20" rows="4" data-index="1"></textarea>
         </div>
-        <div class="board x" id="id">
-            <div class="cell x" data-cell></div>
-            <div class="cell circle" data-cell></div>
+        <div class="board" id="board">
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
             <div class="cell" data-cell></div>
             <div class="cell" data-cell></div>
             <div class="cell" data-cell></div>
@@ -38,6 +38,9 @@
     <div class="bottomBar">
         <button id="gameButton" type="submit" class="gameState" onclick="changeGameState()">
             Start Game
+        </button>
+        <button id="gameButton" type="submit" class="gameState" onclick="changeGameState()">
+            Play Again
         </button>
     </div>
 </body>
