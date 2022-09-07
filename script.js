@@ -130,9 +130,25 @@ const gameBoard = (function() {
         if(displayController.getCurrentPlayer().getSymbol() == 'circle')
             displayController.changeplayer()
         document.getElementById('board').className = 'board'
+        document.querySelectorAll('#line').forEach(e => e.className='')
     }
-    const setWinningSequence = sequence => {
-        console.log('coming here', sequence)
+    const setWinningSequence = pattern => {
+        const sequences = {
+            0: [[0,1,2],'linex'],
+            1: [[3,4,5],'linex'],
+            2: [[6,7,8],'linex'],
+            3: [[0,3,6],'liney'],
+            4: [[1,4,7],'liney'],
+            5: [[2,5,8],'liney'],
+            6: [[0,4,8],'linexy'],
+            7: [[2,4,6],'lineyx'],
+        }
+        let board = document.querySelectorAll('#line')
+        sequences[pattern][0].map(
+            e => board[e].className = sequences[pattern][1]
+        )
+        console.log('here', pattern)
+
     }
     return{
         changeBoard,
