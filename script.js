@@ -31,7 +31,7 @@ let players = (name, symbol) => {
                     _winningSequence[1]++
                 if(_marks[8-i] && (8-i) == position)
                     _winningSequence[2]++
-                if(_marks[(3*i)] && (3*1) == position)
+                if(_marks[(3*i)] && (3*i) == position)
                     _winningSequence[3]++
                 if(_marks[(3*i)+1] && ((3*i)+1) == position)
                     _winningSequence[4]++
@@ -53,7 +53,6 @@ let players = (name, symbol) => {
     }
 
     const checkWin = () => {
-        
         return _winningSequence.findIndex(element => element > 2)
     }
 
@@ -108,7 +107,8 @@ let displayController = (function(){
     e.addEventListener("click", () => {
         if(displayController.getGameState() && displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
             e.classList.add(displayController.getCurrentPlayer().getSymbol())
-            console.log(displayController.getCurrentPlayer().checkWin(), displayController.getCurrentPlayer().getName())
+            if(displayController.getCurrentPlayer().checkWin() >= 0)
+                gameBoard.setWinningSequence(displayController.getCurrentPlayer().checkWin())
             displayController.changeplayer()
         }
     })
@@ -131,9 +131,13 @@ const gameBoard = (function() {
             displayController.changeplayer()
         document.getElementById('board').className = 'board'
     }
+    const setWinningSequence = sequence => {
+        console.log('coming here', sequence)
+    }
     return{
         changeBoard,
-        resetBoard
+        resetBoard,
+        setWinningSequence
     }
 })()
 
