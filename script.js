@@ -7,7 +7,7 @@
 
 let players = (name, symbol) => {
     let _marks = [0,0,0,0,0,0,0,0,0]
-    const _name = name
+    let _name = name
     const _symbol = symbol
     let _wins = 0
     let _winningSequence = [0,0,0,0,0,0,0,0]
@@ -56,7 +56,11 @@ let players = (name, symbol) => {
         return _winningSequence.findIndex(element => element > 2)
     }
 
-    return {getName,getMarks, addMark, getSymbol, resetMarks, getWins, checkWin}
+    const setName = (name = _name) => {
+        return _name = name
+    }
+
+    return {getName,getMarks, addMark, getSymbol, resetMarks, getWins, checkWin, setName}
 }
 
 let player1 = players('Player 1', 'x')
@@ -76,15 +80,19 @@ let displayController = (function(){
         let header = document.getElementById('header')
         let gameButton = document.getElementById('gameButton')
         if(_gameState){
-            header.innerText = `${player1.getWins()} - ${player2.getWins()}`
-            gameButton.innerText = "Reset Game"
-            document.getElementById("board").classList.add('x')
-            document.querySelectorAll('textarea').forEach(
+            let nameField = document.querySelectorAll('textarea');
+            nameField.forEach(
                 e =>  {
                     e.removeAttribute('enabled');
                     e.setAttribute('disabled', 'disabled')
                 }
             )
+            nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
+            nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
+            header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+            gameButton.innerText = "Reset Game"
+            document.getElementById("board").classList.add('x')
+            
             document.querySelectorAll('.editImage').forEach(
                 e => e.setAttribute('style', 'visibility:hidden')
             )
