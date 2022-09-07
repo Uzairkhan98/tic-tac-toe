@@ -75,21 +75,41 @@ let displayController = (function(){
     const getCurrentPlayer = () => _currentPlayer;
     const getOpponentPlayer = () => _opponentPlayer;
 
-    const changeState = () => {
+    const _resetGame = () => {
+        let header = document.getElementById('header')
+        let gameButton = document.getElementById('gameButton')
+        header.innerText = "Click on the start button to continue"
+        gameButton.innerText = "Start Game"
+        document.querySelectorAll('textarea').forEach(
+            e => {
+                e.removeAttribute('disabled');
+                e.setAttribute('enabled', 'enabled')
+            }
+        )
+        document.querySelectorAll('.editImage').forEach(
+            e => e.setAttribute('style', 'visibility:visible')
+        )
+        gameBoard.resetBoard()
+
+    }
+
+    const changeState = (reset) => {
         _gameState = !_gameState
         let header = document.getElementById('header')
         let gameButton = document.getElementById('gameButton')
-        if(_gameState){
-            let nameField = document.querySelectorAll('textarea');
+        let nameField = document.querySelectorAll('textarea');
             nameField.forEach(
                 e =>  {
                     e.removeAttribute('enabled');
                     e.setAttribute('disabled', 'disabled')
                 }
             )
-            nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
-            nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
-            header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+        nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
+        nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
+        header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+
+        if(_gameState){
+            
             gameButton.innerText = "Reset Game"
             document.getElementById("board").classList.add('x')
             
@@ -98,18 +118,8 @@ let displayController = (function(){
             )
         }
         else{
-            header.innerText = "Click on the start button to continue"
-            gameButton.innerText = "Start Game"
-            document.querySelectorAll('textarea').forEach(
-                e => {
-                    e.removeAttribute('disabled');
-                    e.setAttribute('enabled', 'enabled')
-                }
-            )
-            document.querySelectorAll('.editImage').forEach(
-                e => e.setAttribute('style', 'visibility:visible')
-            )
-            gameBoard.resetBoard()
+            if(reset)
+                _resetGame()
         }
     }
 
@@ -133,8 +143,11 @@ let displayController = (function(){
     e.addEventListener("click", () => {
         if(displayController.getGameState() && displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
             e.classList.add(displayController.getCurrentPlayer().getSymbol())
-            if(displayController.getCurrentPlayer().checkWin() >= 0)
+            if(displayController.getCurrentPlayer().checkWin() >= 0){
                 gameBoard.setWinningSequence(displayController.getCurrentPlayer().checkWin())
+                document.getElementById('playAgainButton').setAttribute('style', 'visibility:visible')
+                displayController.changeState();
+            }
             displayController.changeplayer()
         }
     })
@@ -173,8 +186,6 @@ const gameBoard = (function() {
         sequences[pattern][0].map(
             e => board[e].className = sequences[pattern][1]
         )
-        console.log('here', pattern)
-
     }
     return{
         changeBoard,
@@ -183,8 +194,8 @@ const gameBoard = (function() {
     }
 })()
 
-function changeGameState(){
-    displayController.changeState()
+function changeGameState(reset = false){
+    displayController.changeState(reset)
 }
 
 
