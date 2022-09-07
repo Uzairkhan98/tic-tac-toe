@@ -9,10 +9,13 @@ let players = (name, symbol) => {
     let _marks = [0,0,0,0,0,0,0,0,0]
     const _name = name
     const _symbol = symbol
+    const _wins = 0
+
     const getName = () => _name;
     const getMarks = () => _marks;
     const getSymbol = () => _symbol;
-    const resetMarks = () => _marks = [0,0,0,0,0,0,0,0,0]
+    const resetMarks = () => _marks = [0,0,0,0,0,0,0,0,0];
+    const getWins = () => _wins;
 
     const addMark = (opponent, position) => {
         if(!opponent.getMarks()[position]){
@@ -25,14 +28,13 @@ let players = (name, symbol) => {
             return false
         }
     }
-    return {getName,getMarks, addMark, getSymbol, resetMarks}
+    return {getName,getMarks, addMark, getSymbol, resetMarks, getWins}
 }
 
 let player1 = players('Player 1', 'x')
 let player2 = players('Player 2', 'circle')
 
 let displayController = (function(){
-    let _scores = [0,0]
     let _gameState = false
     let _currentPlayer = player1
     let _opponentPlayer = player2
@@ -46,13 +48,14 @@ let displayController = (function(){
         let header = document.getElementById('header')
         let gameButton = document.getElementById('gameButton')
         if(_gameState){
-            header.innerText = `${_scores[0]} - ${_scores[1]}`
+            header.innerText = `${player1.getWins()} - ${player2.getWins()}`
             gameButton.innerText = "Reset Game"
-            gameBoard.resetBoard()
+            document.getElementById("board").classList.add('x')
         }
         else{
             header.innerText = "Click on the start button to continue"
             gameButton.innerText = "Start Game"
+            gameBoard.resetBoard()
         }
     }
 
@@ -81,12 +84,9 @@ let displayController = (function(){
 
 [...document.getElementsByClassName("cell")].forEach((e,i) => {
     e.addEventListener("click", () => {
-        if(displayController.getGameState()){
-            if(displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
-                e.classList.add(displayController.getCurrentPlayer().getSymbol())
-                displayController.changeplayer()
-            }
-
+        if(displayController.getGameState() && displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
+            e.classList.add(displayController.getCurrentPlayer().getSymbol())
+            displayController.changeplayer()
         }
     })
 });
@@ -104,6 +104,7 @@ const gameBoard = (function() {
         board.forEach(cell => cell.className = 'cell')
         player1.resetMarks()
         player2.resetMarks()
+        document.getElementById('board').className = 'board'
     }
     return{
         changeBoard,

@@ -194,6 +194,3 @@ main{
   background-color: rgba(207, 255, 197, 0.363);
 }
 
-.gameState:last-child{
-    visibility: hidden;
-}
