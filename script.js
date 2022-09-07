@@ -79,10 +79,28 @@ let displayController = (function(){
             header.innerText = `${player1.getWins()} - ${player2.getWins()}`
             gameButton.innerText = "Reset Game"
             document.getElementById("board").classList.add('x')
+            document.querySelectorAll('textarea').forEach(
+                e =>  {
+                    e.removeAttribute('enabled');
+                    e.setAttribute('disabled', 'disabled')
+                }
+            )
+            document.querySelectorAll('.editImage').forEach(
+                e => e.setAttribute('style', 'visibility:hidden')
+            )
         }
         else{
             header.innerText = "Click on the start button to continue"
             gameButton.innerText = "Start Game"
+            document.querySelectorAll('textarea').forEach(
+                e => {
+                    e.removeAttribute('disabled');
+                    e.setAttribute('enabled', 'enabled')
+                }
+            )
+            document.querySelectorAll('.editImage').forEach(
+                e => e.setAttribute('style', 'visibility:visible')
+            )
             gameBoard.resetBoard()
         }
     }
