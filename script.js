@@ -22,7 +22,7 @@ let players = (name, symbol) => {
     const getWins = () => _wins;
 
     const addMark = (opponent, position) => {
-        if(!opponent.getMarks()[position]){
+        if((!opponent.getMarks()[position]) && (!_marks[position])){
             _marks[position] = 1
             for(let i = 0 ; i < 3 ; i ++){
                 if(_marks[2-i] && (2 - i) == position)
