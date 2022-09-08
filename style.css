@@ -170,7 +170,7 @@ header{
 
 #header {
     font-family:'Times New Roman', Times, serif;
-    
+
 }
 
 main{
@@ -203,11 +203,6 @@ main{
 .playerName textarea:focus{
     border: none;
 }
-/* 
-.playerName textarea:not(:disabled){
-    background-color: rgb(228, 228, 228);
-    border: 1px solid black;
-} */
 
 .playerName textarea::placeholder {
     font-size: 1.7rem;
@@ -253,4 +248,24 @@ main{
 
 .playAgain{
     visibility: hidden;
+}
+
+.congratsMessage {
+    visibility: hidden;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(144, 138, 132);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+    word-spacing: 1ch;
+    text-align: center;
+
+}
+.congratsMessage h1{
+    width: 70vw;
+    text-transform: capitalize;
 }

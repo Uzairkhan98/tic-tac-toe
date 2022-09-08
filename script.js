@@ -172,12 +172,26 @@ let displayController = (function(){
         if((displayController.getGameState() == 1) && displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
             e.classList.add(displayController.getCurrentPlayer().getSymbol())
             if(displayController.getCurrentPlayer().checkWin() >= 0){
+                document.getElementById('congratulations').innerText = `Congratulations ${displayController.getCurrentPlayer().getName()}`
+                document.getElementById('congratsMessage').setAttribute('style', 'visibility: visible');
+                setTimeout(() => {document.getElementById('congratsMessage').setAttribute('style', 'visibility: hidden')}, 2000)
                 displayController.getCurrentPlayer().addWins()
                 gameBoard.setWinningSequence(displayController.getCurrentPlayer().checkWin())
                 document.getElementById('playAgainButton').setAttribute('style', 'visibility:visible')
                 displayController.changeState(2);
             }
-            displayController.changeplayer()
+            else{
+                displayController.changeplayer()
+                let emptyCell = [] 
+                document.querySelectorAll('.cell').forEach(cell => {if(cell.classList.length == 1) emptyCell.push(cell)})
+                if(emptyCell.length < 1){
+                    document.getElementById('congratulations').innerText = `The game is a Draw`
+                    document.getElementById('congratsMessage').setAttribute('style', 'visibility: visible');
+                    setTimeout(() => {document.getElementById('congratsMessage').setAttribute('style', 'visibility: hidden')}, 2000)
+                    document.getElementById('playAgainButton').setAttribute('style', 'visibility:visible')
+                    displayController.changeState(2);
+                }
+            }
         }
     })
 });
