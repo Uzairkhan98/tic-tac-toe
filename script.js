@@ -19,7 +19,11 @@ let players = (name, symbol) => {
         _marks = [0,0,0,0,0,0,0,0,0]
         _winningSequence = [0,0,0,0,0,0,0,0]
     };
+    const resetWins = () => {
+        _wins = 0
+    }
     const getWins = () => _wins;
+    const addWins = () => _wins++
 
     const addMark = (opponent, position) => {
         if((!opponent.getMarks()[position]) && (!_marks[position])){
@@ -60,14 +64,14 @@ let players = (name, symbol) => {
         return _name = name
     }
 
-    return {getName,getMarks, addMark, getSymbol, resetMarks, getWins, checkWin, setName}
+    return {getName,getMarks, addMark, getSymbol, resetMarks, getWins, checkWin, setName, resetWins, addWins}
 }
 
 let player1 = players('Player 1', 'x')
 let player2 = players('Player 2', 'circle')
 
 let displayController = (function(){
-    let _gameState = false
+    let _gameState = 0
     let _currentPlayer = player1
     let _opponentPlayer = player2
 
@@ -75,52 +79,76 @@ let displayController = (function(){
     const getCurrentPlayer = () => _currentPlayer;
     const getOpponentPlayer = () => _opponentPlayer;
 
-    const _resetGame = () => {
-        let header = document.getElementById('header')
-        let gameButton = document.getElementById('gameButton')
+    const _resetGame = (header, gameButton, nameField, editImage) => {
+        document.getElementById('playAgainButton').setAttribute('style', 'visibility:hidden')
+        console.log('enetering here 2')
+
         header.innerText = "Click on the start button to continue"
         gameButton.innerText = "Start Game"
-        document.querySelectorAll('textarea').forEach(
+        nameField.forEach(
             e => {
                 e.removeAttribute('disabled');
                 e.setAttribute('enabled', 'enabled')
             }
         )
-        document.querySelectorAll('.editImage').forEach(
-            e => e.setAttribute('style', 'visibility:visible')
-        )
+        editImage.forEach(e => e.setAttribute('style', 'visibility:visible'))
         gameBoard.resetBoard()
-
+        player1.resetWins()
+        player2.resetWins()
     }
 
-    const changeState = (reset) => {
-        _gameState = !_gameState
-        let header = document.getElementById('header')
-        let gameButton = document.getElementById('gameButton')
-        let nameField = document.querySelectorAll('textarea');
-            nameField.forEach(
-                e =>  {
-                    e.removeAttribute('enabled');
-                    e.setAttribute('disabled', 'disabled')
-                }
-            )
+    const _startGame = (header, gameButton, nameField, editImage) => {
+        document.getElementById('playAgainButton').setAttribute('style', 'visibility:hidden')
+        gameBoard.resetBoard()
+        console.log('enetering here')
+        nameField.forEach(
+            e =>  {
+                e.removeAttribute('enabled');
+                e.setAttribute('disabled', 'disabled')
+            }
+        )
         nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
         nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
         header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+        
+        gameButton.innerText = "Reset Game"
+        document.getElementById("board").classList.add('x')
+        
+        editImage.forEach(e => e.setAttribute('style', 'visibility:hidden'))
+    }
 
-        if(_gameState){
-            
-            gameButton.innerText = "Reset Game"
-            document.getElementById("board").classList.add('x')
-            
-            document.querySelectorAll('.editImage').forEach(
-                e => e.setAttribute('style', 'visibility:hidden')
-            )
-        }
-        else{
-            if(reset)
-                _resetGame()
-        }
+    const _finishGame = (header, nameField, editImage) => {
+        
+        nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
+        nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
+        header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+        nameField.forEach(
+            e => {
+                e.removeAttribute('disabled');
+                e.setAttribute('enabled', 'enabled')
+            }
+        )
+        editImage.forEach(
+            e => e.setAttribute('style', 'visibility:visible')
+        )
+    }
+
+    const changeState = (reset) => {
+        console.log('reset:', reset,'gamestate:', _gameState)
+        let header = document.getElementById('header')
+        let gameButton = document.getElementById('gameButton')
+        let nameField = document.querySelectorAll('textarea');
+        let editImage = document.querySelectorAll('.editImage')
+
+        if(reset == 0)
+           _resetGame(header, gameButton, nameField, editImage)
+        else if((_gameState == 0 || _gameState == 2) && reset == 1)
+            _startGame(header, gameButton, nameField, editImage)
+        else if(_gameState == 1 && reset == 2)
+            _finishGame(header, nameField, editImage)
+        
+        _gameState = reset
+
     }
 
     const changeplayer = () => {
@@ -141,12 +169,13 @@ let displayController = (function(){
 
 [...document.getElementsByClassName("cell")].forEach((e,i) => {
     e.addEventListener("click", () => {
-        if(displayController.getGameState() && displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
+        if((displayController.getGameState() == 1) && displayController.getCurrentPlayer().addMark(displayController.getOpponentPlayer(),i)){
             e.classList.add(displayController.getCurrentPlayer().getSymbol())
             if(displayController.getCurrentPlayer().checkWin() >= 0){
+                displayController.getCurrentPlayer().addWins()
                 gameBoard.setWinningSequence(displayController.getCurrentPlayer().checkWin())
                 document.getElementById('playAgainButton').setAttribute('style', 'visibility:visible')
-                displayController.changeState();
+                displayController.changeState(2);
             }
             displayController.changeplayer()
         }
@@ -186,6 +215,8 @@ const gameBoard = (function() {
         sequences[pattern][0].map(
             e => board[e].className = sequences[pattern][1]
         )
+        document.getElementById('board').className = 'board'
+
     }
     return{
         changeBoard,
@@ -194,8 +225,13 @@ const gameBoard = (function() {
     }
 })()
 
-function changeGameState(reset = false){
-    displayController.changeState(reset)
+function changeGameState(reset){
+    if(displayController.getGameState() == 0 && reset == 0)
+        displayController.changeState(1)
+    else if (reset ==0)
+        displayController.changeState(0)
+    else
+        displayController.changeState(reset)
 }
 
 
