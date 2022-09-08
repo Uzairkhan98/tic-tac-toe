@@ -166,6 +166,8 @@ header{
     text-align: center;
     margin-bottom: min(7rem,10vh);
     height: 7rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 #header {
@@ -176,12 +178,20 @@ header{
 main{
     display: flex;
     justify-content: space-around;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 2rem;
     margin-top: -2rem;
     margin-bottom: max(3rem,5vh);
 }
 
+@media (max-width: 730px) {
+    main {
+        flex-direction: column;
+        align-items: center;
+
+    }
+}
 .playerName{
     display: flex;
     gap: 0.5rem;
