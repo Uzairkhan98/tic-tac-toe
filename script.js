@@ -109,7 +109,7 @@ let displayController = (function(){
         )
         nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
         nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
-        header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+        header.innerText = `${player1.getWins()} - ${player2.getWins()}`
         
         gameButton.innerText = "Reset Game"
         document.getElementById("board").classList.add('x')
@@ -121,7 +121,7 @@ let displayController = (function(){
         
         nameField[0].value.length > 2 ? player1.setName(nameField[0].value) : player1.setName()
         nameField[1].value.length > 2 ? player2.setName(nameField[1].value) : player2.setName()
-        header.innerText = `${player1.getName()} ${player1.getWins()} - ${player2.getWins()} ${player2.getName()}`
+        header.innerText = `${player1.getWins()} - ${player2.getWins()}`
         nameField.forEach(
             e => {
                 e.removeAttribute('disabled');
@@ -215,7 +215,7 @@ const gameBoard = (function() {
         sequences[pattern][0].map(
             e => board[e].className = sequences[pattern][1]
         )
-        document.getElementById('board').className = 'board'
+        document.querySelectorAll('.cell').forEach(cell => cell.classList.add('active'))
 
     }
     return{
