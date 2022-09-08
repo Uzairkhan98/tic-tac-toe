@@ -197,6 +197,7 @@ main{
     overflow: hidden;
     position: relative;
     height: 4ch;
+    background-color: white;
 }
 
 .playerName textarea:hover, .playerName textarea:active,
